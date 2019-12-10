@@ -1,0 +1,45 @@
+@startuml
+hide empty members
+
+class Product{
++ name: str
++ price: float
+}
+
+abstract class Server{
++ {static} n_max_returned_entries = 3
++ get_entries(n_letters: int): List[Product]
++ {abstract} _get_all_products()
+}
+
+Server "1" *-- "*" Product
+
+class TooManyProductsFoundError
+
+Exception <|-- TooManyProductsFoundError
+
+class ListServer{
++products: List[Product]
++_get_all_products(): List[Product]
+}
+
+Server <|-- ListServer
+ListServer "1" *-- "*" Product
+
+Server..> TooManyProductsFoundError : «throws»
+
+class MapServer{
++products: Dict[Product]
++_get_all_products(): List[Product]
+}
+MapServer "1" *-- "*" Product
+
+Server <|-- MapServer
+
+class Client{
++client_server: Server
++get_total_price(n_letters: Optional[int]):Optional[float]
+}
+
+Client o-- Server
+@enduml

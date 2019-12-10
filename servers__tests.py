@@ -35,8 +35,8 @@ class ServerTest(unittest.TestCase):
         products = [Product('aa11', 1), Product('aa13', 3), Product('aa12', 2), Product('aa15', 5), Product('aa14', 4)]
         for server_type in server_types:
             server = server_type(products)
-            entries = server.get_entries(2)
-            self.assertEqual([], entries)
+            with self.assertRaises(TooManyProductsFoundError):
+                server.get_entries(2)
 
 
 class ClientTest(unittest.TestCase):
